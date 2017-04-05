@@ -1,5 +1,6 @@
-node('node') {
+node('master') {
 
+    echo '*************************'
 
     currentBuild.result = "SUCCESS"
 
