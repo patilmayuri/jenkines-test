@@ -11,6 +11,21 @@
 ## Multilayer APP Blueprint
 <TBC>
 
+## REAN Jenkins Blueprint
+<TBC>
+
+## REAN HealNow Blueprint
+<TBC>
+
+## SoftNAS HA
+<TBC>
+
+## REAN RADAR
+<TBC>
+
+## REAN VerifyNow Blueprint
+<TBC>
+
 ## REAN VPN between VPCs Blueprint
 
 ### Openswan
@@ -44,19 +59,3 @@
 - Destroy environment
 1. REAN-VPN-between-VPCs-Blueprint
 2. REAN-VPN-between-VPCs-Network-Blueprint
-
-
-## REAN Jenkins Blueprint
-<TBC>
-
-## REAN HealNow Blueprint
-<TBC>
-
-## SoftNAS HA
-<TBC>
-
-## REAN RADAR
-<TBC>
-
-## REAN VerifyNow Blueprint
-<TBC>
