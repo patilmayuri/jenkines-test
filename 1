@@ -1,2 +1,59 @@
-jfafsafnjnjnjjhjhjhjhtest file
-vsvss
+{
+          "variables": {
+                    "git_token": "",
+                    "aws_access_key": "",
+                    "aws_secret_key": "",
+                    "cookbook_name": "InstallFirefoxUbuntu",
+                    "vpc_id": "vpc-c98a75ac",
+                    "version":"28",
+                    "security_group": "sg-f37bb888"
+          },
+          "builders": [
+                    {
+                              "type": "amazon-ebs",
+                              "access_key": "{{user `aws_access_key`}}",
+                              "secret_key": "{{user `aws_secret_key`}}",
+                              "region": "us-west-2",
+                              "source_ami": "ami-5e63d13e",
+			                        "security_group_id":"{{user `security_group`}}",
+                              "instance_type": "t2.micro",
+                              "ssh_username": "ubuntu",
+                              "ami_name": "packer-example {{timestamp}}"
+
+                    }
+          ],
+          "provisioners": [
+                    {
+                              "type": "shell",
+                              "inline": [
+                                        "sudo apt-get update; sudo apt-get install -y git",
+                                        "ssh-keyscan github.com >> ~/.ssh/known_hosts",
+                                        "mkdir cookbooks",
+                                        "git clone https://{{user `git_token`}}@github.com/patilmayuri/TestNowCookbooks.git",
+                                        "mv TestNowCookbooks/{{user `cookbook_name`}} cookbooks"
+                              ]
+                    },
+                    {
+                              "type": "chef-solo",
+                              "cookbook_paths": "cookbooks",
+                              "run_list": ""
+                    },
+                    {
+                              "type": "file",
+                              "source": "solo.json",
+                              "destination": "solo.json"
+                    },
+                    {
+                              "type": "file",
+                              "source": "solo.rb",
+                              "destination": "solo.rb"
+                    },
+                    {
+                              "type": "shell",
+                              "inline": [
+                                "echo '{ \"{{user `cookbook_name`}}\": {\"version\":\"{{user `version`}}\"}, \"run_list\": \"recipe[{{user `cookbook_name`}}::default]\"}' > solo.json",
+                                "sudo chef-solo -c solo.rb -j solo.json"
+                              ]
+                    }
+          ]
+}
