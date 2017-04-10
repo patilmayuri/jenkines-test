@@ -10,7 +10,6 @@ node {
 		 
 		stage('Test') {
 		echo "Running: Test"
-	        echo $PWD
 		sh '''set +x;
 		 foodcritic .
                  rubocop .
