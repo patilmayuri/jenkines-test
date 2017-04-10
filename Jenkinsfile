@@ -68,3 +68,4 @@ node {
 	step([$class: 'WsCleanup', cleanWhenFailure: true])
 }
 }
+}
