@@ -11,6 +11,7 @@ node {
 		echo "Running: Test"
 		sh '''set +x;
 		 foodcritic .
+                 rubocop .
 		'''
 		}
 	    }
