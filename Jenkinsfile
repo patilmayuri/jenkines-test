@@ -15,14 +15,6 @@ node {
             """
         }
 
-        stage ('Check_style') {
-
-            
-                sh """
-                    eval "\$(chef shell-init bash)"
-                    rake style
-                """
-        	}
             }
             catch (Exception err) {
                 currentBuild.result = "UNSTABLE"
