@@ -53,7 +53,7 @@ def notifyBuild(String buildStatus = 'STARTED',String thiserr) {
         message: 'SUCCESSFUL',
         state: currentBuild.result]]]])
         echo "status set to ${buildStatus}."
-	  sendMail("SUCCESSFUL","NULL")
+	  
   } else if (buildStatus == 'FAILED') {
     color = 'RED'
     colorCode = '#FF0000'
@@ -65,7 +65,7 @@ def notifyBuild(String buildStatus = 'STARTED',String thiserr) {
         message: 'FAILED',
         state: '${buildStatus}']]]])
         echo "status set to ${buildStatus}."
-	  sendMail("FAILED","${thiserr}")
+	 
 } 
 	step([$class: 'WsCleanup', cleanWhenFailure: true])
 }
