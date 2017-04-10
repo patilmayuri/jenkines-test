@@ -57,6 +57,8 @@ def notifyBuild(String buildStatus = 'STARTED',String thiserr) {
         state: currentBuild.result]]]])
         echo "status set to ${buildStatus}."
 	  
+	 echo "in green ...................." 
+	  
   } else if (buildStatus == 'FAILED') {
     color = 'RED'
     colorCode = '#FF0000'
