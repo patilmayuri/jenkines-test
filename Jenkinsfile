@@ -10,7 +10,7 @@ node {
 		stage('Checkout and build deps') {
 		sh '''
 		sudo gem install rubocop
-		if [foodcritic -V]
+		if [foodcritic -V]; then
 		sudo gem install foodcritic
 		fi	
 		'''
