@@ -1,26 +1,31 @@
 node {
-
-	currentBuild.result = "SUCCESS"
+  currentBuild.result = "SUCCESS"
 	echo "initial file.........."
 	try
-            {
+              {
 		stage('Checkout') {
 		checkout scm
 		}
-		 
-		stage('Test') {
-		echo "Running: Test"
-		sh '''set +x;
-		sudo gem install rubocop;
-		 foodcritic .;
-                 rubocop .
+
+		stage('Checkout and build deps') {
+		sh '''
+		sudo gem install rubocop
+		if [foodcritic -V]
+		sudo gem install foodcritic
+		fi	
 		'''
 		}
-	    }
-
-    catch(e)
-        {
-		echo e 
-		throw e
-	}
+		stage('Test') {
+		echo "Running: Test"
+		sh '''set +x;	
+		foodcritic .; 
+		rubocop .
+		'''
+		}
+	  }
+    catch(Exception e){
+                 println "Execution failed"
+                 sh "exit 1"
+             }
+             println "Execution passed"
 }
