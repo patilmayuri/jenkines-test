@@ -1,4 +1,4 @@
-pipeline {
+node {
 
 	echo "initial file.........."
 	try
