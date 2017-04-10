@@ -29,9 +29,9 @@ node {
                  println "Execution failed"
                  sh "exit 1"
              }
-             
-	
-	def notifyBuild(String buildStatus = 'STARTED',String thiserr) {
+}  
+
+def notifyBuild(String buildStatus = 'STARTED',String thiserr) {
   buildStatus =  buildStatus ?: 'SUCCESSFUL'
 	
 	def colorName = 'RED'
@@ -66,6 +66,4 @@ node {
 	  sendMail("FAILED","${thiserr}")
 } 
 	step([$class: 'WsCleanup', cleanWhenFailure: true])
-}
-}
 }
