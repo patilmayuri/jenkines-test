@@ -1,23 +1,26 @@
 node {
 
 	currentBuild.result = "SUCCESS"
+	echo "initial file.........."
+	try
+            {
+		stage('Checkout') {
+		checkout scm
+		}
+		 
+		stage('Test') {
+		echo "Running: Test"
+	        echo $PWD
+		sh '''set +x;
+		 foodcritic .
+                 rubocop .
+		'''
+		}
+	    }
 
-    try {
-
-        stage ('Checkout') {
-
-            checkout scm
-            sh """
-                eval "\$(chef shell-init bash)"
-                gem list --local
-                gem install foodcritic
-                gem install bundler
-            """
-        }
-
-            }
-            catch (Exception err) {
-                currentBuild.result = "UNSTABLE"
-            }
-	
+    catch(e)
+        {
+		echo e 
+		throw e
+	}
 }
