@@ -6,6 +6,7 @@ pipeline {
 		stage('Checkout') {
 		checkout scm
 		}
+	    }
 
     catch(e)
         {
@@ -13,5 +14,5 @@ pipeline {
 		throw e
 	}
 	
- }
 }
+
