@@ -11,6 +11,7 @@ node {
 		stage('Test') {
 		echo "Running: Test"
 		sh '''set +x;
+
 		 foodcritic .
                  rubocop .
 		'''
