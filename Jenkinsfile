@@ -34,6 +34,9 @@ node {
 }  
 
 def notifyBuild(String buildStatus = 'STARTED',String thiserr) {
+	
+	echo "***************"
+	echo buildStatus
   buildStatus =  buildStatus ?: 'SUCCESSFUL'
 	
 	def colorName = 'RED'
