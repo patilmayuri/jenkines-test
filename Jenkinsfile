@@ -67,5 +67,5 @@ def notifyBuild(String buildStatus = 'STARTED',String thiserr) {
         echo "status set to ${buildStatus}."
 	 
 } 
-	step([$class: 'WsCleanup', cleanWhenFailure: true])
+	
 }
