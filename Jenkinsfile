@@ -1,12 +1,18 @@
 pipeline {
-    agent any
+    try
+        {
+		stage('Checkout') {
+		checkout scm
+		}
 
-    stages {
-        stage('Build') {
-            steps {
-                echo 'Building..'
-            }
-        }
+                
+		stage('Build_Backend_Code') {
+		echo "Running: Build_Backend_Code"
+		sh '''set +x;
+		 mvn clean install
+		'''
+		}
+
         stage('Test') {
             steps {
                 echo 'Testing..'
@@ -18,4 +24,11 @@ pipeline {
             }
         }
     }
+
+    catch(e)
+        {
+		echo e 
+		throw e
+	}
+			
 }
