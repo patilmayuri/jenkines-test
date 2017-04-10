@@ -11,8 +11,8 @@ node {
 		stage('Test') {
 		echo "Running: Test"
 		sh '''set +x;
-
-		 foodcritic .
+                 sudo gem install foodcritic;
+		 foodcritic .;
                  rubocop .
 		'''
 		}
