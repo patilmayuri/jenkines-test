@@ -23,10 +23,12 @@ node {
 		'''
 		}
                println "Execution passed"
+	       notifyBuild(currentBuild.result,"NULL")	      
 	      
 	      }
     catch(Exception e){
                  println "Execution failed"
+	    	 notifyBuild("FAILED","${e}")
                  sh "exit 1"
              }
 }  
