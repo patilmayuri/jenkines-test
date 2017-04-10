@@ -35,8 +35,7 @@ node {
 
 def notifyBuild(String buildStatus = 'STARTED',String thiserr) {
 	
-	echo "***************"
-	echo buildStatus
+	echo "------------------ :: $buildStatus"
   buildStatus =  buildStatus ?: 'SUCCESSFUL'
 	
 	def colorName = 'RED'
@@ -46,6 +45,7 @@ def notifyBuild(String buildStatus = 'STARTED',String thiserr) {
     color = 'YELLOW'
     colorCode = '#FFFF00'
   } else if (buildStatus == 'SUCCESSFUL') {
+	  echo "1............"
     color = 'GREEN'
     colorCode = '#00FF00'
 	  step([$class: 'GitHubCommitStatusSetter',
