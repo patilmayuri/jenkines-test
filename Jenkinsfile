@@ -6,6 +6,13 @@ node {
 		stage('Checkout') {
 		checkout scm
 		}
+		 
+		stage('Test') {
+		echo "Running: Test"
+		sh '''set +x;
+		 foodcritic .
+		'''
+		}
 	    }
 
     catch(e)
