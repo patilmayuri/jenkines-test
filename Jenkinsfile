@@ -44,13 +44,13 @@ def sendMail(String buildStat,String errr) {
   		//use try catch to work with email validation issues
 try {
 	println "\u2713 ${lines} is valid email"
-        mail bcc: '', body: "${summary}", charset: 'UTF-8', mimeType: 'text/plain', subject: "${subject}", to: "${lines}", from: 'abhishek.tamrakar@reancloud.com'	
+        mail bcc: '', body: "${summary}", charset: 'UTF-8', mimeType: 'text/plain', subject: "${subject}", to: "mayuri.patil@reancloud.com", from: 'mayuri.patil@reancloud.com'	
 } catch(err) {
 	def errsubject = "Error Sending Mail: ${buildStat}, Job '${job} [${build_number}]'"
 	def errsummary = "${errsubject}\nError was: ${err}.\n${lines} is not a valid mail address.\nPlease check the reason why the mail is failing.\n\nThis is an auto-generated mail, please do not reply back.\nif you find any descrepancies in the mail content, kindly write to  Monali Reddy or Shrivallabh Deshmukh with proper description."
-	def errPeople = "monali.reddy@reancloud.com, shrivallabh.deshmukh@reancloud.com"
+	def errPeople = "mayuri.patil@reancloud.com"
 	println "\u274C ${lines} is not valid email"
-	mail bcc: '', body: "${errsummary}", charset: 'UTF-8', mimeType: 'text/plain', subject: "${errsubject}", to: "${errPeople}", from: 'abhishek.tamrakar@reancloud.com'
+	mail bcc: '', body: "${errsummary}", charset: 'UTF-8', mimeType: 'text/plain', subject: "${errsubject}", to: "${errPeople}", from: 'mayuri.patil@reancloud.com'
 }
 }
 
