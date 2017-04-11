@@ -1,41 +1,60 @@
+build_number = "${env.BUILD_NUMBER}"
+job = env.JOB_NAME.split('/')
+job_name = job[0]
+branch_name = job[1]
+git_branch_name = branch_name.replaceAll("%2F","/")
+url_branch_name = git_branch_name.replaceAll("/","%252F")
+
 node {
-  currentBuild.result = "SUCCESS"
-	echo "initial file.........."
-	try
-              {
+       try
+        {
 		stage('Checkout') {
 		checkout scm
 		}
 
-		stage('Checkout and build deps') {
-		sh '''
-		sudo gem install rubocop
-		if [foodcritic -V]; then
-		sudo gem install foodcritic
-		fi	
+                
+		stage('Build_Backend_Code') {
+		echo "Running: Build_Backend_Code"
+		sh '''set +x
 		'''
 		}
-		stage('Test') {
-		echo "Running: Test"
-		sh '''set +x;	
-		foodcritic .; 
-		rubocop .
-		'''
+
+	        stage('UT_Code') {
+                echo "Running : UT_Backend_Code"
 		}
-               println "Execution passed"
-	       notifyBuild(currentBuild.result,"NULL")	      
-	      
-	      }
-    catch(Exception e){
-                 println "Execution failed"
-	    	 notifyBuild("FAILED","${e}")
-                 sh "exit 1"
-             }
 }  
+                catch(e)
+        {
+		stage('Email_Notification_For_Failures') {
+			notifyBuild("FAILED","${e}")
+			step([$class: 'WsCleanup', cleanWhenFailure: true])
+		  		}
+		throw e
+	}
+			notifyBuild(currentBuild.result,"NULL")
+}
+
+def sendMail(String buildStat,String errr) {
+	def subject = "${buildStat}: Job '${job} [${build_number}]'"
+	def summary = "${subject}\nError was: ${errr}"
+	sh "git log --after 1.days.ago|egrep -io '[a-z0-9\\-\\._@]++\\.[a-z0-9]{1,4}'|head -1 >lastAuthor"
+	sh "set +x;sed -i 's/ //g' lastAuthor"	//fixing the email adddress
+  		def lines = readFile("lastAuthor")
+  		println "Email notifications will be send to : ${lines}"
+  		//use try catch to work with email validation issues
+try {
+	println "\u2713 ${lines} is valid email"
+        mail bcc: '', body: "${summary}", charset: 'UTF-8', mimeType: 'text/plain', subject: "${subject}", to: "${lines}", from: 'abhishek.tamrakar@reancloud.com'	
+} catch(err) {
+	def errsubject = "Error Sending Mail: ${buildStat}, Job '${job} [${build_number}]'"
+	def errsummary = "${errsubject}\nError was: ${err}.\n${lines} is not a valid mail address.\nPlease check the reason why the mail is failing.\n\nThis is an auto-generated mail, please do not reply back.\nif you find any descrepancies in the mail content, kindly write to  Monali Reddy or Shrivallabh Deshmukh with proper description."
+	def errPeople = "monali.reddy@reancloud.com, shrivallabh.deshmukh@reancloud.com"
+	println "\u274C ${lines} is not valid email"
+	mail bcc: '', body: "${errsummary}", charset: 'UTF-8', mimeType: 'text/plain', subject: "${errsubject}", to: "${errPeople}", from: 'abhishek.tamrakar@reancloud.com'
+}
+}
 
 def notifyBuild(String buildStatus = 'STARTED',String thiserr) {
-	
-	echo "------------------ :: $buildStatus"
   buildStatus =  buildStatus ?: 'SUCCESSFUL'
 	
 	def colorName = 'RED'
@@ -45,7 +64,6 @@ def notifyBuild(String buildStatus = 'STARTED',String thiserr) {
     color = 'YELLOW'
     colorCode = '#FFFF00'
   } else if (buildStatus == 'SUCCESSFUL') {
-	  echo "1............"
     color = 'GREEN'
     colorCode = '#00FF00'
 	  step([$class: 'GitHubCommitStatusSetter',
@@ -56,9 +74,7 @@ def notifyBuild(String buildStatus = 'STARTED',String thiserr) {
         message: 'SUCCESSFUL',
         state: currentBuild.result]]]])
         echo "status set to ${buildStatus}."
-	  
-	 echo "in green ...................." 
-	  
+	  sendMail("SUCCESSFUL","NULL")
   } else if (buildStatus == 'FAILED') {
     color = 'RED'
     colorCode = '#FF0000'
@@ -70,7 +86,7 @@ def notifyBuild(String buildStatus = 'STARTED',String thiserr) {
         message: 'FAILED',
         state: '${buildStatus}']]]])
         echo "status set to ${buildStatus}."
-	 
+	  sendMail("FAILED","${thiserr}")
 } 
-	
+	step([$class: 'WsCleanup', cleanWhenFailure: true])
 }
