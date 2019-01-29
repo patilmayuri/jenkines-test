@@ -1,3 +1,10 @@
+{
+   "_id" : ObjectId("5c3d8b4d311a1917149b7b38"),
+   "evidenceBasketsPerPage" : 9,
+   "intelBasketsPerPage" : 9
+}
+
+
 ## Blueprints
 * [Multilayer-APP-Blueprint](#multilayer-app-blueprint)
 * [REAN-VPN-between-VPCs-Blueprint](#rean-vpn-between-vpcs-blueprint)
